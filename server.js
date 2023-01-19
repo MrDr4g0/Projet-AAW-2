@@ -116,3 +116,17 @@ app.get('/*',(rec, res) =>{
 app.listen(port, () => {
     console.log(`Exemple app listening on port ${port}`);
 });
+
+
+async function main() {
+    const MongoClient = require('mongodb').MongoClient;
+    const uri =
+        'mongodb+srv://Lucas:fdXDKMBx5nfQYQBJ@cluster-i.cyomcwx.mongodb.net/sample_airbnb?retryWrites=true&w=majority';
+    const client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect((err) => {
+        const collection = client.db('test').collection('devices');
+        // perform actions on the collection object
+        client.close();
+    });
+}
+main().catch(console.error);
