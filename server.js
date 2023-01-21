@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 const port = 3000;
@@ -78,6 +79,10 @@ const animalTab =[
 
 ];
 
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(express.json()); // faut utiliser du json
 
 function generateNewId(){
@@ -118,15 +123,16 @@ app.listen(port, () => {
 });
 
 
-async function main() {
-    const MongoClient = require('mongodb').MongoClient;
-    const uri =
-        'mongodb+srv://Lucas:fdXDKMBx5nfQYQBJ@cluster-i.cyomcwx.mongodb.net/sample_airbnb?retryWrites=true&w=majority';
-    const client = new MongoClient(uri, { useNewUrlParser: true });
-    client.connect((err) => {
-        const collection = client.db('test').collection('devices');
-        // perform actions on the collection object
-        client.close();
+const db = require("./src/app/tab/db_init");
+db.mongoose
+    .connect(db.url, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .then(() => {
+        console.log("Connected to the database!");
+    })
+    .catch(err => {
+        console.log("Cannot connect to the database!", err);
+        process.exit();
     });
-}
-main().catch(console.error);
