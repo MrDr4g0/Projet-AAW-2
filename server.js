@@ -1,6 +1,7 @@
+
 const express = require("express");
 const bodyParser = require("body-parser");
-const path = require("path");
+
 const app = express();
 const port = 3000;
 
@@ -79,8 +80,9 @@ const animalTab =[
 
 ];
 
-app.use(bodyParser.json());
 
+
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.json()); // faut utiliser du json
@@ -94,14 +96,6 @@ app.get('/message',(req,res) => {
     res.send('Mon premier Serveur NodeJs !')
 });
 
-app.get("/api/animals", (req, res)=>{
-    res.send(animalTab)
-});
-
-app.get("/api/animals:id", (req, res)=>{
-    res.send(animalTab.id)
-});
-
 
 app.post("/api/animals", (req, res)=>{
     const animal = req.body;
@@ -111,19 +105,18 @@ app.post("/api/animals", (req, res)=>{
     res.send(animalTab)
 });
 
+require('./src/app/controllers/schemas.controller.js')(app);
 
+
+
+const path = require("path");
 
 app.use('/',express.static('public'));
 app.get('/*',(rec, res) =>{
     res.sendFile(path.resolve("./public/index.html"))
 });
 
-app.listen(port, () => {
-    console.log(`Exemple app listening on port ${port}`);
-});
-
-
-const db = require("./src/app/tab/db_init");
+const db = require("./src/app/config/db.config.js");
 db.mongoose
     .connect(db.url, {
         useNewUrlParser: true,
@@ -136,3 +129,9 @@ db.mongoose
         console.log("Cannot connect to the database!", err);
         process.exit();
     });
+
+app.listen(port, () => {
+    console.log(`Exemple app listening on port ${port}`);
+});
+
+

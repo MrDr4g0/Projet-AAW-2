@@ -1,17 +1,16 @@
 
 import { Outlet , Link, useLoaderData, Form,useSubmit, } from "react-router-dom";
-import { getAnimals, createAnimal } from "../app/animals"; // fichier animal
-import { useEffect} from "react";
+import { getAnimals, createAnimal } from "../app/animals_fake"; // fichier animal
+import { useState,useEffect} from "react";
+import schemaService from "../app/service/schema.service";
 
 export async function loader({request}) {
 
-
     const url = new URL(request.url);
     const q = url.searchParams.get("q"); // prend le mot dans la barre de recherche
-
     const animals = await getAnimals(q); //recherche tout les animaux
-
     return { animals , q };
+
 }
 
 export async function action() {

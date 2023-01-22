@@ -1,6 +1,6 @@
 
 import { Form, useLoaderData } from "react-router-dom";
-import { getAnimal } from "../app/animals";
+import { getAnimal } from "../app/animals_fake";
 import "../style.scss"
 
 export async function loader({ params }) {
